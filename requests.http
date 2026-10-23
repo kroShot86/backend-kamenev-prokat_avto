@@ -1,44 +1,44 @@
-# Запросы для демонстрации. В VS Code нужно расширение REST Client, в JetBrains IDE всё встроено.
-# Над каждым запросом появляется ссылка «Send Request».
-# items заменить на свой ресурс, тела на поля своей сущности.
+### health
+GET http://localhost:8000/health
 
-@base = http://localhost:8000
-
-### Сервис жив?
-GET {{base}}/health
-
-### Создать
-POST {{base}}/api/items
+### создать
+POST http://localhost:8000/api/cars
 Content-Type: application/json
 
-{ "title": "Первая запись" }
+{"brand": "Toyota", "model": "Camry", "price_per_day": 5000, "available": true}
 
-### Список
-GET {{base}}/api/items
+### список
+GET http://localhost:8000/api/cars
 
-### Получить одну запись
-GET {{base}}/api/items/1
+### список с пагинацией
+GET http://localhost:8000/api/cars?limit=2&offset=0
 
-### Изменить
-PATCH {{base}}/api/items/1
+### список с фильтром
+GET http://localhost:8000/api/cars?brand=Toyota
+
+### получить по id
+GET http://localhost:8000/api/cars/1
+
+### обновить
+PATCH http://localhost:8000/api/cars/1
 Content-Type: application/json
 
-{ "title": "Изменённая запись" }
+{"price_per_day": 4500}
 
-### Удалить
-DELETE {{base}}/api/items/1
+### удалить
+DELETE http://localhost:8000/api/cars/1
 
-### После удаления должен быть 404
-GET {{base}}/api/items/1
+### снова получить (404)
+GET http://localhost:8000/api/cars/1
 
-### Сломанный JSON, должен быть 400
-POST {{base}}/api/items
+### битый JSON (400)
+POST http://localhost:8000/api/cars
 Content-Type: application/json
 
-{ "title":
+{"brand": "Toyota",
 
-### Пустое обязательное поле, должен быть 400
-POST {{base}}/api/items
+### пустое обязательное поле (400)
+POST http://localhost:8000/api/cars
 Content-Type: application/json
 
-{ "title": "" }
+{"brand": "", "model": "Camry", "price_per_day": 5000}
