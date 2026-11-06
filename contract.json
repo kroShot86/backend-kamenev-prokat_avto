@@ -10,15 +10,32 @@
     "price_per_day": 5000,
     "available": true
   },
-  "update": {
-    "price_per_day": 4500
-  },
+  "update": { "price_per_day": 4500 },
   "required_field": "brand",
   "errors": [
-    { "body": { "brand": "Toyota", "model": "Camry", "price_per_day": 5000, "available": "not_a_bool" }, "field": "available" },
     { "body": { "brand": "", "model": "Camry", "price_per_day": 5000 }, "field": "brand" },
     { "body": { "brand": "Toyota", "model": "", "price_per_day": 5000 }, "field": "model" },
-    { "body": { "brand": "Toyota", "model": "Camry", "price_per_day": -1 }, "field": "price_per_day" }
+    { "body": { "brand": "Toyota", "model": "Camry", "price_per_day": -1 }, "field": "price_per_day" },
+    { "body": { "brand": "Toyota", "model": "Camry", "price_per_day": 5000, "available": "not_a_bool" }, "field": "available" }
   ],
-  "filter": { "param": "brand", "value": "Toyota", "other": "BMW" }
+  "filter": { "param": "brand", "value": "Toyota", "other": "BMW" },
+  "text_field": "brand",
+  "search": { "param": "q", "field": "brand" },
+  "child": {
+    "resource": "rentals",
+    "create": { "renter_name": "Иванов", "taken_at": "2026-10-01" },
+    "parent_field": "car_id"
+  },
+  "rule": {
+    "description": "Нельзя арендовать машину, если она недоступна",
+    "parent": { "available": false },
+    "setup": [],
+    "violate": {
+      "method": "POST",
+      "path": "/api/cars/{id}/rentals",
+      "body": { "renter_name": "Петров", "taken_at": "2026-10-02" }
+    },
+    "expect_status": 409
+  },
+  "stats_path": "/api/cars/stats"
 }
