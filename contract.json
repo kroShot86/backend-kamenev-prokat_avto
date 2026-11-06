@@ -1,10 +1,24 @@
 {
   "base_url": "http://localhost:8000",
-  "resource": "items",
+  "resource": "cars",
   "id_field": "id",
   "missing_id": "999999",
   "list_key": null,
-  "create": { "title": "Первая запись" },
-  "update": { "title": "Изменённая запись" },
-  "required_field": "title"
+  "create": {
+    "brand": "Toyota",
+    "model": "Camry",
+    "price_per_day": 5000,
+    "available": true
+  },
+  "update": {
+    "price_per_day": 4500
+  },
+  "required_field": "brand",
+  "errors": [
+    { "body": { "brand": "Toyota", "model": "Camry", "price_per_day": 5000, "available": "not_a_bool" }, "field": "available" },
+    { "body": { "brand": "", "model": "Camry", "price_per_day": 5000 }, "field": "brand" },
+    { "body": { "brand": "Toyota", "model": "", "price_per_day": 5000 }, "field": "model" },
+    { "body": { "brand": "Toyota", "model": "Camry", "price_per_day": -1 }, "field": "price_per_day" }
+  ],
+  "filter": { "param": "brand", "value": "Toyota", "other": "BMW" }
 }
